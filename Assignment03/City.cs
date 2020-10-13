@@ -75,9 +75,9 @@ namespace Assignment03_City
             }
             */
 
-            var highPop = cities.Where(city => city.Population > highestPopulation);
+            var highPop = cities.Where(city => city.Population > highestPopulation).Select(c => highestPopulation = c.Population);
 
-            Console.WriteLine("Highest population: " + highestPopulation);
+            Console.WriteLine("Highest population: " + highPop.First());
 
             int earliestFounding = cities[0].Founded;
             foreach (City city in cities)
