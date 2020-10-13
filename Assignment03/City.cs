@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Assignment03
+namespace Assignment03_City
 {
     public class City
     {
