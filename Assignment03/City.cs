@@ -61,56 +61,18 @@ namespace Assignment03_City
                     Founded = 1200
                 }
             };
-
-            //Change from here
-
-            int highestPopulation = cities[2].Population;
-            /*
-            foreach (City city in cities)
-            {
-                if (city.Population > highestPopulation)
-                {
-                    highestPopulation = city.Population;
-                }
-            }
-            */
-
-            var highPop = cities.Where(city => city.Population > highestPopulation).Select(c => highestPopulation = c.Population);
-
-            Console.WriteLine("Highest population: " + highPop.First());
-
-            int earliestFounding = cities[0].Founded;
-            foreach (City city in cities)
-            {
-                if (city.Founded < earliestFounding)
-                {
-                    earliestFounding = city.Founded;
-                }
-            }
-            Console.WriteLine("Earliest founding: " + earliestFounding);
-
-            double totalPopulationDensity = 0;
-            foreach (City city in cities)
-            {
-                totalPopulationDensity += city.Population / city.Area;
-            }
-            double averagePopulationDensity = Math.Round(totalPopulationDensity / cities.Length);
-            Console.WriteLine("Average population density: " + averagePopulationDensity + " people per square kilometer");
-
-            List<City> longNameCities = new List<City>();
-            foreach (City city in cities)
-            {
-                if (city.Name.Length > 6)
-                {
-                    longNameCities.Add(city);
-                }
-            }
-            List<string> longNames = new List<string>();
-            foreach (City city in longNameCities)
-            {
-                longNames.Add(city.Name);
-            }
-            Console.WriteLine("Cities with names longer than six letters: " + String.Join(", ", longNames));
+            //Highest population using LINQ
+            var highPop = cities.OrderBy(c => c.Population).Last();
+            Console.WriteLine("Highest population: " + highPop.Population);
+            //Earliest founding using LINQ
+            var founded = cities.OrderBy(c => c.Founded).First();
+            Console.WriteLine("Earliest founding: " + founded.Founded);
+            //Average population density using LINQ
+            var avgPopDensity = cities.Select(c => c.Population / c.Area).Average();
+            Console.WriteLine("Average population density: " + Math.Round(avgPopDensity) + " people per square kilometer");
+            //Long city names using LINQ
+            var longNames = cities.Where(c => c.Name.Length > 6).Select(c => c.Name).ToList();
+            Console.WriteLine("Cities with names longer than six letters: " + string.Join(", ", longNames));
         }
     }
 }
