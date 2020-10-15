@@ -64,12 +64,15 @@ namespace Assignment03_City
             //Highest population using LINQ
             var highPop = cities.OrderBy(c => c.Population).Last();
             Console.WriteLine("Highest population: " + highPop.Population);
+
             //Earliest founding using LINQ
             var founded = cities.OrderBy(c => c.Founded).First();
             Console.WriteLine("Earliest founding: " + founded.Founded);
+            
             //Average population density using LINQ
-            var avgPopDensity = cities.Select(c => c.Population / c.Area).Average();
-            Console.WriteLine("Average population density: " + Math.Round(avgPopDensity) + " people per square kilometer");
+            var avgPopDensity = Math.Round(cities.Select(c => c.Population / c.Area).Average());
+            Console.WriteLine("Average population density: " + avgPopDensity + " people per square kilometer");
+            
             //Long city names using LINQ
             var longNames = cities.Where(c => c.Name.Length > 6).Select(c => c.Name).ToList();
             Console.WriteLine("Cities with names longer than six letters: " + string.Join(", ", longNames));
