@@ -9,6 +9,36 @@ namespace Assignment03_Bank
     {
         public string Name;
         public int Balance;
+        public void Deposit(int amount)
+        {
+            Balance += amount;
+            Console.WriteLine("Money deposited");
+        }
+        public void Withdraw(int amount)
+        {
+            if (Balance >= amount)
+            {
+                Balance -= amount;
+                Console.WriteLine("Money withdrawn");
+            }
+            else
+            {
+                Console.WriteLine("Balance too low to withdraw");
+            }
+        }
+        public void Transfer(Account toAccount, int amount)
+        {
+            if (Balance >= amount)
+            {
+                Withdraw(amount);
+                toAccount.Deposit(amount);
+                Console.WriteLine("Money transfered");
+            }
+            else
+            {
+                Console.WriteLine("Balance too low to transfer");
+            }
+        }
     }
 
     public class Share
@@ -16,6 +46,35 @@ namespace Assignment03_Bank
         public string Company;
         public int Amount;
         public int Price;
+
+        public void BuyShare(int amount, Account account)
+        {
+            int totalPrice = Price * amount;
+            if (account.Balance >= totalPrice)
+            {
+                account.Withdraw(totalPrice);
+                Amount += amount;
+                Console.WriteLine("Shares bought");
+            }
+            else
+            {
+                Console.WriteLine("Balance too low to buy shares");
+            }
+        }
+        public void SellShare(int amount, Account account)
+        {
+            if (amount <= Amount)
+            {
+                int totalPrice = Price * amount;
+                account.Deposit(totalPrice);
+                Amount -= amount;
+                Console.WriteLine("Shares sold");
+            }
+            else
+            {
+                Console.WriteLine("Number of shares too low to sell");
+            }
+        }
     }
 
     public class Bank
@@ -102,7 +161,7 @@ namespace Assignment03_Bank
                 int amount = int.Parse(Console.ReadLine());
 
                 Console.Clear();
-                Deposit(account, amount);
+                account.Deposit(amount);
 
                 Console.WriteLine();
                 ShowAccounts(accounts);
@@ -120,7 +179,7 @@ namespace Assignment03_Bank
                 int amount = int.Parse(Console.ReadLine());
 
                 Console.Clear();
-                Withdraw(account, amount);
+                account.Withdraw(amount);
 
                 Console.WriteLine();
                 ShowAccounts(accounts);
@@ -142,7 +201,7 @@ namespace Assignment03_Bank
                 int amount = int.Parse(Console.ReadLine());
 
                 Console.Clear();
-                Transfer(fromAccount, toAccount, amount);
+                fromAccount.Transfer(toAccount, amount);
 
                 Console.WriteLine();
                 ShowAccounts(accounts);
@@ -168,7 +227,7 @@ namespace Assignment03_Bank
                 Account account = accounts[accountNumber - 1];
 
                 Console.Clear();
-                BuyShare(share, shareAmount, account);
+                share.BuyShare(shareAmount, account);
 
                 Console.WriteLine();
                 ShowShares(shares);
@@ -197,7 +256,7 @@ namespace Assignment03_Bank
                 Account account = accounts[accountNumber - 1];
 
                 Console.Clear();
-                SellShare(share, shareAmount, account);
+                share.SellShare(shareAmount, account);
 
                 Console.WriteLine();
                 ShowShares(shares);
@@ -232,69 +291,6 @@ namespace Assignment03_Bank
             {
                 Share share = shares[i];
                 Console.WriteLine((i + 1) + ": " + share.Company + " (" + share.Amount + " at " + share.Price + " kr)");
-            }
-        }
-
-        public static void Withdraw(Account account, int amount)
-        {
-            if (account.Balance >= amount)
-            {
-                account.Balance -= amount;
-                Console.WriteLine("Money withdrawn");
-            }
-            else
-            {
-                Console.WriteLine("Balance too low to withdraw");
-            }
-        }
-
-        public static void Deposit(Account account, int amount)
-        {
-            account.Balance += amount;
-            Console.WriteLine("Money deposited");
-        }
-
-        public static void Transfer(Account fromAccount, Account toAccount, int amount)
-        {
-            if (fromAccount.Balance >= amount)
-            {
-                Withdraw(fromAccount, amount);
-                Deposit(toAccount, amount);
-                Console.WriteLine("Money transfered");
-            }
-            else
-            {
-                Console.WriteLine("Balance too low to transfer");
-            }
-        }
-
-        public static void BuyShare(Share share, int amount, Account account)
-        {
-            int totalPrice = share.Price * amount;
-            if (account.Balance >= totalPrice)
-            {
-                Withdraw(account, totalPrice);
-                share.Amount += amount;
-                Console.WriteLine("Shares bought");
-            }
-            else
-            {
-                Console.WriteLine("Balance too low to buy shares");
-            }
-        }
-
-        public static void SellShare(Share share, int amount, Account account)
-        {
-            if (amount <= share.Amount)
-            {
-                int totalPrice = share.Price * amount;
-                Deposit(account, totalPrice);
-                share.Amount -= amount;
-                Console.WriteLine("Shares sold");
-            }
-            else
-            {
-                Console.WriteLine("Number of shares too low to sell");
             }
         }
     }
